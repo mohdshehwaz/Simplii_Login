@@ -40,9 +40,10 @@ module.exports.create_otp = async (req,res)  => {
                         verified:false
                     }
                 });
+                sendEmail.sendMail(data,otpCode);
                 return res.json(200,{
                     message:"OTP generated again successfully",
-                    OTP:otpCode
+                    otp:otpCode
                 })
             }
             
@@ -57,7 +58,7 @@ module.exports.create_otp = async (req,res)  => {
         
         sendEmail.sendMail(user,otpCode);
         console.log("user is -> ", user);
-        return res.json(200,{message:"OK",OTP:otpCode});
+        return res.json(200,{message:"OK",otp:otpCode});
     }
     catch(err){
         console.log(err.message);
