@@ -12,8 +12,8 @@ app.use(bodyParser.json());
 
 app.use(cors({
     origin:"*"
-}));
-app.use('/',require('./routes/index'));
+})); 
+app.use('/',require('./routes/index'));  
 
 app.listen(process.env.PORT,(err) => {
     if(err){
