@@ -1,5 +1,6 @@
 const User = require('../models/user');
 const sendEmail = require('../mailer/mailer');
+const jwt = require('jsonwebtoken');
 
 module.exports.create_otp = async (req,res)  => {
     try{
@@ -16,7 +17,7 @@ module.exports.create_otp = async (req,res)  => {
                 return res.json(200,{
                     message:"Your Account has been blocked duee to wrong password please try again after some time"
                 });
-            }
+            } 
 
             if(diff>0){
                 return res.json(200,{
@@ -52,7 +53,7 @@ module.exports.create_otp = async (req,res)  => {
             email:req.body.email,
             expiryIn:new Date().getTime() + 300*1000,
             otp:otpCode,
-            gap:new Date().getTime() + 60*1000
+            gap:new Date().getTime() + 60*1000 
             
         });
         
@@ -110,10 +111,16 @@ module.exports.verify_otp = async (req,res) => {
                         $set:{
                             verified:true,
                         }
-                    });
+                    }); 
+                    console.log("In jwt the data ",data);
                     return res.json(200,{
-                        message:"Email has been verified successfully"
+                        success:"Verified  successfull", 
+                        data:{
+                            token:jwt.sign(data,"simplii"),
+                            user:user
+                        }
                     });
+                   
                 }
                 else{
                     let count = data.count + 1;
